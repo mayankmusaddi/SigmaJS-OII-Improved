@@ -1,0 +1,31 @@
+VARIABLES:
+sigInst -> Sigma Instance (stores all the data, sigma object)
+GP -> Binds HTML to Javascript
+config -> stores all data (configuration and data of graph)
+
+FUNCTIONS:
+jQuery.getJSON("config.json") -> Loads data from config.json to config and calls setupGUI(config)
+initSigma(config) -> 
+    Initialises properties like drawProps, graphProps, mouseProps
+    Instantiates sigInst with the above properties
+    Parses JSON and fills data into sigInst
+setupGUI(config) ->
+    Populates HTML static data
+    Initialises GP (Search and Cluster is bounded to GP)
+configSigmaElements(config) ->
+    Incorportates Node Hover behaviour
+    Calls all form and button functions accordingly
+Search(a) -> Class with search function that displays search results
+Cluster(a) -> ??
+showGroups(a) -> ??
+nodeNormal() -> Unselects nodes
+nodesActive(c) -> Activates nodes in array c
+nodeActive(a) -> Activates node with id a
+showCluster(a) -> ??
+Object.size(obj) -> Function to return size of any object obj
+
+FUNCTION CALL:
+jQuery.getJSON -> setupGUI
+setupGUI -> initSigma
+initSigma -> configSigmaElements
+Search -> nodesActive, nodeNormal
