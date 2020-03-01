@@ -1,4 +1,4 @@
-var sigInst, canvas, $GP
+var sigInst, canvas, $GP, filter
 
 //Load configuration file
 var config={};
@@ -113,7 +113,10 @@ function initSigma(config) {
     if (data.indexOf("gexf")>0 || data.indexOf("xml")>0)
         a.parseGexf(data,dataReady);
     else
-	    a.parseJson(data,dataReady);
+        a.parseJson(data,dataReady);
+        
+    filter = new sigma.plugins.filter(sigInst);
+    console.log(filter);
     gexf = sigmaInst = null;
 
     // console.log(a);
@@ -418,6 +421,7 @@ function Search(a) {
         }
 
         c.length ? (nodesActive(c)) : b = showCluster(a);
+        // c.length ? (nodeNetworkActive(c)) : b = showCluster(a);
         //this.results is just the search results div
         this.results.html(sr.join(""));
         this.results.show();
@@ -474,6 +478,77 @@ function nodeNormal() {
         a.attr['selected'] = 0;
 
     }), sigInst.draw(2, 2, 2, 2), sigInst.neighbors = {}, sigInst.active = !1, $GP.calculating = !1, window.location.hash = "")
+}
+
+function nodeNetworkActive(c) {
+
+    sigInst.detail = !0;
+
+    sigInst.iterNodes(function (a) {
+        a.hidden = !0;
+        a.attr.lineWidth = !1;
+        a.attr.color = a.color
+    });
+
+    a = c[0].id;
+    for (var d = 0, h = c.length; d < h; d++)
+    {
+        a = c[d].id
+        var b = sigInst._core.graph.nodesIndex[a];
+        b.hidden = !1;
+        b.attr.color = b.color;
+        b.attr.lineWidth = 6;
+        b.attr.strokeStyle = "#000000";
+    }
+    
+	//b is object of active node -- SAH
+    var b = sigInst._core.graph.nodesIndex[a];
+    b.hidden = !1;
+    b.attr.color = b.color;
+    b.attr.lineWidth = 6;
+    b.attr.strokeStyle = "#000000";
+    sigInst.draw(2, 2, 2, 2);
+
+    // $GP.info_link.find("ul").html(f.join(""));
+    // $GP.info_link.find("li").each(function () {
+    //     var a = $(this),
+    //         b = a.attr("rel");
+    // });
+    // f = b.attr;
+    // if (f.attributes) {
+  	// 	var image_attribute = false;
+  	// 	if (config.informationPanel.imageAttribute) {
+  	// 		image_attribute=config.informationPanel.imageAttribute;
+  	// 	}
+    //     e = [];
+    //     temp_array = [];
+    //     g = 0;
+    //     for (var attr in f.attributes) {
+    //         var d = f.attributes[attr],
+    //             h = "";
+	// 		if (attr!=image_attribute) {
+    //             h = '<span><strong>' + attr + ':</strong> ' + d + '</span><br/>'
+	// 		}
+    //         //temp_array.push(f.attributes[g].attr);
+    //         e.push(h)
+    //     }
+
+    //     if (image_attribute) {
+    //     	//image_index = jQuery.inArray(image_attribute, temp_array);
+    //     	$GP.info_name.html("<div><img src=" + f.attributes[image_attribute] + " style=\"vertical-align:middle\" /> <span onmouseover=\"sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex['" + b.id + '\'])" onmouseout="sigInst.refresh()">' + b.label + "</span></div>");
+    //     } else {
+    //     	$GP.info_name.html("<div><span onmouseover=\"sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex['" + b.id + '\'])" onmouseout="sigInst.refresh()">' + b.label + "</span></div>");
+    //     }
+    //     // Image field for attribute pane
+    //     $GP.info_data.html(e.join("<br/>"))
+    // }
+    // $GP.info_data.show();
+    // $GP.info_p.html("Connections:");
+    // $GP.info.animate({width:'show'},350);
+	// $GP.info_donnees.hide();
+	// $GP.info_donnees.show();
+    sigInst.active = a;
+    window.location.hash = b.label;
 }
 
 function nodesActive(c) {
